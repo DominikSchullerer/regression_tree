@@ -211,3 +211,8 @@ drawButton.addEventListener('click', function() {
         console.log(functions)
     }
 })
+
+let canvas = document.getElementById("plotCanvas")
+let context = canvas.getContext("2d")
+context.fillStyle = "#FF0000"
+context.fillRect(0, 0, 150, 75)
