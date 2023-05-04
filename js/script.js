@@ -1,20 +1,36 @@
 let limitForSplitting = 20
+let targetDepth = 3
+let functions = []
+
+class constFunction {
+    constructor(minDef, maxDef, value) {
+        this.minDef = minDef
+        this.maxDef = maxDef
+        this.value = value
+    }
+}
 
 class Leaf {
-    constructor(decision, samples) {
+    constructor(decision, samples, minDef, maxDef) {
         this.decision = decision
         this.samples = samples
         this.sampleQuantity = samples.length
+        this.minDef = minDef
+        this.maxDef = maxDef
+
+        functions.push(new constFunction(minDef, maxDef, decision))
     }
 }
 
 class Node {
-    constructor(threshold, samples, smallChild, largeChild) {
+    constructor(threshold, samples, smallChild, largeChild, minDef, maxDef) {
         this.threshold = threshold
         this.samples = samples
         this.sampleQuantity = samples.length
         this.smallChild = smallChild
         this.largeChild = largeChild
+        this.minDef = minDef
+        this.maxDef = maxDef
     }
 }
 
@@ -74,20 +90,18 @@ function getBestSplittingPoint(sortedSamples) {
     return bestSplittingPoint
 }
 
-function regressionTree(samples) {
-    samples = sortData(samples)
-
-    if (samples.length < limitForSplitting) {
-        let decision = getAverage(samples)
-        return new Leaf(decision, samples)
+function regressionTree(samples, depth = 0, minDef = samples[0][0], maxDef = samples[samples.length-1][0]) {
+    if (depth >= targetDepth || samples.length == 1) {
+        let decision = Math.round(getAverage(samples) * 100) / 100
+        return new Leaf(decision, samples, minDef, maxDef)
     } else {
         let splittingPoint = getBestSplittingPoint(samples)
         let threshold = samples[splittingPoint][0]
         let smallerSamples = samples.slice(0, splittingPoint)
         let largerSamples = samples.slice(splittingPoint)
-        let smallChild = regressionTree(smallerSamples)
-        let largeChild = regressionTree(largerSamples)
-        return new Node(threshold, samples, smallChild, largeChild)
+        let smallChild = regressionTree(smallerSamples, depth + 1, minDef, threshold)
+        let largeChild = regressionTree(largerSamples, depth +1, threshold, maxDef)
+        return new Node(threshold, samples, smallChild, largeChild, minDef, maxDef)
     }
 }
 
@@ -115,8 +129,12 @@ function getNodeHTML(node) {
     let sampleQuantity = document.createElement('p')
     sampleQuantity.textContent = 'Anzahl der Trainingsdaten: ' + String(node.sampleQuantity)
 
+    let defArea = document.createElement('p')
+    defArea.textContent = 'Min: ' + String(node.minDef) + ', Max: ' + String(node.maxDef)
+
     content.appendChild(threshold)
     content.appendChild(sampleQuantity)
+    content.appendChild(defArea)
     nodeHtml.appendChild(content)
     
     let children = document.createElement('ul')
@@ -147,8 +165,12 @@ function getLeafHTML(leaf) {
     let sampleQuantity = document.createElement('p')
     sampleQuantity.textContent = 'Anzahl der Trainingsdaten: ' + String(leaf.sampleQuantity)
     
+    let defArea = document.createElement('p')
+    defArea.textContent = 'Min: ' + String(leaf.minDef) + ', Max: ' + String(leaf.maxDef)
+
     content.appendChild(decision)
     content.appendChild(sampleQuantity)
+    content.appendChild(defArea)
 
     leafHTML.appendChild(content)
 
@@ -157,18 +179,19 @@ function getLeafHTML(leaf) {
 
 let file = document.getElementById('data')
 let data = undefined
-
 file.addEventListener("change", function () {
     var reader = new FileReader()
     reader.onload = function() {
     data = this.result.split(/[\n\r]/)
-    data = data.filter((str) => str != '')
+    data = data.filter((str) => str != '').slice(1)
       }
     reader.readAsText(this.files[0])
 });
 
 let drawButton = document.getElementById('drawTree')
 drawButton.addEventListener('click', function() {
+    targetDepth = document.getElementById('targetDepthInput').value
+    functions = []
     if (data != undefined) {
         let samples = []
         data.forEach(datum => {
@@ -181,8 +204,10 @@ drawButton.addEventListener('click', function() {
 
             samples.push(parsedSample)
         });
+        samples = sortData(samples)
 
         let tree = regressionTree(samples)
         treeToHtml(tree)
+        console.log(functions)
     }
 })

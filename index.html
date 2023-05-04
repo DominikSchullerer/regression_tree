@@ -18,6 +18,10 @@
                id="data" name="data"
                accept=".csv">
         <button id="drawTree">Entscheidungsbaum erstellen</button>
+        <label for="targetDepthInput">Gib die maximale Tiefe des Baums ein:</label>
+        <input type="number"
+               min="0" max="10" value="3" 
+               id="targetDepthInput" name="targetDepthInput">
     </div>
 
     <div id="treeContainer"></div>
