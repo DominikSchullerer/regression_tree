@@ -1,6 +1,12 @@
 let limitForSplitting = 20
 let targetDepth = 3
 let functions = []
+let minDefGlobal = 0
+let maxDefGlobal = 0
+let minValueGlobal = 0
+let maxValueGlobal = 0
+
+prepare_canvas()
 
 class constFunction {
     constructor(minDef, maxDef, value) {
@@ -203,16 +209,22 @@ drawButton.addEventListener('click', function() {
             });
 
             samples.push(parsedSample)
+
+            minDefGlobal = Math.min(minDefGlobal, parsedSample[0])
+            maxDefGlobal = Math.max(maxDefGlobal, parsedSample[0])
+            minValueGlobal = Math.min(minValueGlobal, parsedSample[1])
+            maxValueGlobal = Math.max(maxValueGlobal, parsedSample[1])
         });
         samples = sortData(samples)
 
         let tree = regressionTree(samples)
+
         treeToHtml(tree)
-        console.log(functions)
+
+        prepare_canvas()
+
+        functions.forEach(f => {
+            draw_x_line(f.minDef, f.maxDef, f.value)
+        });
     }
 })
-
-let canvas = document.getElementById("plotCanvas")
-let context = canvas.getContext("2d")
-context.fillStyle = "#FF0000"
-context.fillRect(0, 0, 150, 75)
