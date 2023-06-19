@@ -142,8 +142,8 @@ function prepare_canvas() {
 
 function draw_x_line(x_min, x_max, y) {
     ctx.beginPath();
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "blue";
 
     ctx.moveTo(x_min * x_grid_size / x_axis_scalar, -y * y_grid_size / y_axis_scalar);
     ctx.lineTo(x_max * x_grid_size / x_axis_scalar, -y * y_grid_size / y_axis_scalar);
@@ -152,8 +152,9 @@ function draw_x_line(x_min, x_max, y) {
 }
 
 function draw_point(x, y) {
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = "#add8e6";
     ctx.beginPath();
-    ctx.arc(x * x_grid_size / x_axis_scalar, -y * y_grid_size / y_axis_scalar, 3, 0, 2 * Math.PI)
+    ctx.arc(x * x_grid_size / x_axis_scalar, -y * y_grid_size / y_axis_scalar, 2, 0, 2 * Math.PI)
     ctx.fill()
+    ctx.fillStyle = "#000000";
 }

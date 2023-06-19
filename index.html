@@ -19,11 +19,15 @@
         <input type="file"
                id="data" name="data"
                accept=".csv">
-        <button id="drawTree">Entscheidungsbaum erstellen</button>
+        <label for="trainingDataProportion">Gib an, wieviele Prozent der Daten als Trainingsdaten verwendet werden sollen:</label>
+        <input type="number"
+               min="0" max="75" value="25" 
+               id="trainingDataProportion" name="trainingDataProportion">
         <label for="targetDepthInput">Gib die maximale Tiefe des Baums ein:</label>
         <input type="number"
                min="0" max="10" value="3" 
                id="targetDepthInput" name="targetDepthInput">
+        <button id="drawTree">Entscheidungsbaum erstellen</button>
     </div>
 
     <div id="plotContainer">

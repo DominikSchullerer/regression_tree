@@ -30,3 +30,11 @@ p {
 .leaf {
     background-color: chartreuse;
 }
+
+input {
+    max-width: fit-content; 
+}
+
+button {
+    max-width: fit-content; 
+}
