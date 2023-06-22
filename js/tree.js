@@ -1,6 +1,6 @@
 let limitForSplitting = 20
 let targetDepth = 3
-let trainingDataProportion = 25
+let trainingDataProportion = 75
 let functions = []
 let minDefGlobal = 0
 let maxDefGlobal = 0
@@ -135,7 +135,7 @@ function getNodeHTML(node) {
     content.classList.add('node')
 
     let threshold = document.createElement('p')
-    threshold.textContent = '< ' + String(node.threshold)
+    threshold.textContent = '<= ' + String(node.threshold) + '?'
 
     let sampleQuantity = document.createElement('p')
     sampleQuantity.textContent = 'Anzahl der Trainingsdaten: ' + String(node.sampleQuantity)
@@ -220,7 +220,7 @@ function divideData(samples, proportion) {
     let testData = samples
 
     while (trainingData.length < targetLength) {
-        let i = getRandomInt(samples.length - 1)
+        let i = getRandomInt(samples.length)
         trainingData.push(testData.splice(i, 1)[0])
     }
 
