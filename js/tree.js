@@ -9,6 +9,8 @@ let maxValueGlobal = 0
 let dividedData = [[],[]]
 let trainingData = []
 let testData = []
+let testDataIsDisplayed = false;
+let trainingDataIsDisplayed = true;
 
 prepare_canvas()
 
@@ -101,7 +103,7 @@ function getBestSplittingPoint(sortedSamples) {
     return bestSplittingPoint
 }
 
-function regressionTree(samples, depth = 0, minDef = samples[0][0], maxDef = samples[samples.length - 1][0]) {
+function regressionTree(samples, depth = 0, minDef = minDefGlobal, maxDef = maxDefGlobal) {
     if (depth >= targetDepth || samples.length == 1) {
         let decision = Math.round(getAverage(samples) * 100) / 100
         return new Leaf(decision, samples, minDef, maxDef)
@@ -135,13 +137,13 @@ function getNodeHTML(node) {
     content.classList.add('node')
 
     let threshold = document.createElement('p')
-    threshold.textContent = '<= ' + String(node.threshold) + '?'
+    threshold.textContent = 'Temperatur <= ' + String(node.threshold) + '?'
 
     let sampleQuantity = document.createElement('p')
     sampleQuantity.textContent = 'Anzahl der Trainingsdaten: ' + String(node.sampleQuantity)
 
     let defArea = document.createElement('p')
-    defArea.textContent = 'Min: ' + String(node.minDef) + ', Max: ' + String(node.maxDef)
+    defArea.textContent = 'Temperatur von ' + String(node.minDef) + ' °C bis ' + String(node.maxDef) + ' °C'
 
     content.appendChild(threshold)
     content.appendChild(sampleQuantity)
@@ -172,12 +174,12 @@ function getLeafHTML(leaf) {
     content.classList.add('leaf')
 
     let decision = document.createElement('p')
-    decision.textContent = 'Getroffene Entscheidung: ' + String(leaf.decision)
+    decision.textContent = 'Umsatz: ' + String(leaf.decision) + " €"
     let sampleQuantity = document.createElement('p')
     sampleQuantity.textContent = 'Anzahl der Trainingsdaten: ' + String(leaf.sampleQuantity)
 
     let defArea = document.createElement('p')
-    defArea.textContent = 'Min: ' + String(leaf.minDef) + ', Max: ' + String(leaf.maxDef)
+    defArea.textContent = 'Temperatur von ' + String(leaf.minDef) + ' °C bis ' + String(leaf.maxDef) + ' °C'
 
     content.appendChild(decision)
     content.appendChild(sampleQuantity)
@@ -262,9 +264,59 @@ drawButton.addEventListener('click', function () {
         functions.forEach(f => {
             draw_x_line(f.minDef, f.maxDef, f.value)
         });
+    }
+})
 
+let trainingDataButton = document.getElementById('trainingDataDisplay')
+trainingDataButton.addEventListener('click', function () {
+    if (trainingDataIsDisplayed) {
+        trainingDataIsDisplayed = false;
+    } else {
+        trainingDataIsDisplayed = true;
+    }
+
+    prepare_canvas();
+
+    functions.forEach(f => {
+        draw_x_line(f.minDef, f.maxDef, f.value)
+    });
+
+    if (trainingDataIsDisplayed) {
+        trainingData.forEach(datum => {
+            draw_point(datum[0], datum[1], "#000000")
+        })
+    }
+
+    if (testDataIsDisplayed) {
         testData.forEach(datum => {
-            draw_point(datum[0],datum[1])
+            draw_point(datum[0],datum[1], "#add8e6")
+        });
+    }
+})
+
+let testDataButton = document.getElementById('testDataDisplay')
+testDataButton.addEventListener('click', function () {
+    if (testDataIsDisplayed) {
+        testDataIsDisplayed = false;
+    } else {
+        testDataIsDisplayed = true;
+    }
+
+    prepare_canvas();
+
+    functions.forEach(f => {
+        draw_x_line(f.minDef, f.maxDef, f.value)
+    });
+
+    if (trainingDataIsDisplayed) {
+        trainingData.forEach(datum => {
+            draw_point(datum[0], datum[1], "#000000")
+        })
+    }
+
+    if (testDataIsDisplayed) {
+        testData.forEach(datum => {
+            draw_point(datum[0],datum[1], "#add8e6")
         });
     }
 })

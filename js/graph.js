@@ -138,6 +138,18 @@ function prepare_canvas() {
         ctx.textAlign = 'start';
         ctx.fillText(y_axis_starting_point.number * i * y_axis_scalar + y_axis_starting_point.suffix, 8, -y_grid_size * i + 3);
     }
+
+    // Labeling the axises
+    ctx.font = '16px Arial';
+    ctx.textAlign = 'start';
+    ctx.fillText("T in °C", 490, 35);
+
+    ctx.font = '16px Arial';
+    ctx.textAlign = 'end';
+    ctx.fillText("Umsatz in €", -5, -475);
+
+    // Legend of the Graph
+    
 }
 
 function draw_x_line(x_min, x_max, y) {
@@ -151,8 +163,8 @@ function draw_x_line(x_min, x_max, y) {
     console.log()
 }
 
-function draw_point(x, y) {
-    ctx.fillStyle = "#add8e6";
+function draw_point(x, y, color = "#add8e6") {
+    ctx.fillStyle = color;
     ctx.beginPath();
     ctx.arc(x * x_grid_size / x_axis_scalar, -y * y_grid_size / y_axis_scalar, 2, 0, 2 * Math.PI)
     ctx.fill()

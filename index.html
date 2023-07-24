@@ -19,6 +19,7 @@
         <input type="file"
                id="data" name="data"
                accept=".csv">
+        <p>Die Trainingsdaten werden zufällig ausgewählt.</p>
         <label for="trainingDataProportion">Gib an, wieviele Prozent der Daten als Trainingsdaten verwendet werden sollen:</label>
         <input type="number"
                min="0" max="75" value="75" 
@@ -27,7 +28,11 @@
         <input type="number"
                min="0" max="10" value="3" 
                id="targetDepthInput" name="targetDepthInput">
-        <button id="drawTree">Entscheidungsbaum erstellen</button>
+               <div>
+                   <button id="drawTree">Entscheidungsbaum erstellen</button>
+                   <button id="trainingDataDisplay">Trainingsdaten ein-/ausblenden</button>
+                   <button id="testDataDisplay">Testdaten ein-/ausblenden</button>
+               </div>
     </div>
 
     <div id="plotContainer">
