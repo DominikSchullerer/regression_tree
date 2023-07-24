@@ -137,7 +137,7 @@ function getNodeHTML(node) {
     content.classList.add('node')
 
     let threshold = document.createElement('p')
-    threshold.textContent = 'Temperatur <= ' + String(node.threshold) + '?'
+    threshold.textContent = 'Temperatur < ' + String(node.threshold) + '?'
 
     let sampleQuantity = document.createElement('p')
     sampleQuantity.textContent = 'Anzahl der Trainingsdaten: ' + String(node.sampleQuantity)
