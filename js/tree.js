@@ -140,7 +140,7 @@ function getNodeHTML(node) {
     threshold.textContent = 'Temperatur < ' + String(node.threshold) + '?'
 
     let sampleQuantity = document.createElement('p')
-    sampleQuantity.textContent = 'Anzahl der Trainingsdaten: ' + String(node.sampleQuantity)
+    sampleQuantity.textContent = 'Anzahl Trainingsdatensätze: ' + String(node.sampleQuantity)
 
     let defArea = document.createElement('p')
     defArea.textContent = 'Temperatur von ' + String(node.minDef) + ' °C bis ' + String(node.maxDef) + ' °C'
@@ -176,7 +176,7 @@ function getLeafHTML(leaf) {
     let decision = document.createElement('p')
     decision.textContent = 'Umsatz: ' + String(leaf.decision) + " €"
     let sampleQuantity = document.createElement('p')
-    sampleQuantity.textContent = 'Anzahl der Trainingsdaten: ' + String(leaf.sampleQuantity)
+    sampleQuantity.textContent = 'Anzahl Trainingsdatensätze: ' + String(leaf.sampleQuantity)
 
     let defArea = document.createElement('p')
     defArea.textContent = 'Temperatur von ' + String(leaf.minDef) + ' °C bis ' + String(leaf.maxDef) + ' °C'
